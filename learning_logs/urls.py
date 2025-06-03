@@ -8,4 +8,8 @@ app_name = 'learning_logs' # helps Django distinguish this app from the others i
 urlpatterns = [
     # Home Page
     path('', views.index, name='index'), # empty string for now to match the base URL
+    # Page that shows all topics
+    path('topics/', views.topics, name='topics'),
+    # Detail page for a single topic
+    path('topics/<int:topic_id>/', views.topic, name='topic')
 ]
