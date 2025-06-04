@@ -1,9 +1,11 @@
 from django.db import models # A model tells Django how to work with the day that will be stored in the app
+from django.contrib.auth.models import User
 
 class Topic(models.Model):
     """A topic the user is learning about.""" # Model Field Reference https://docs.djangoproject.com/en/4.1/ref/models/fields
     text = models.CharField(max_length=200) # max character length for storing topic titles in our database
     date_added = models.DateTimeField(auto_now_add=True) # Django sets the date and time at the time of a post
+    owner = models.ForeignKey(User, on_delete=models.CASCADE) # foreign key relationship to the User model
 
     def __str__(self):
         """Return a string representation of the model."""

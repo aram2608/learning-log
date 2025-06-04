@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 
-def regester(request):
+def register(request):
     """Register a new user."""
     if request.method != 'POST':
         # Display blank registration form
