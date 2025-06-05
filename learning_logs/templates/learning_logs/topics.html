@@ -1,18 +1,28 @@
 {% extends 'learning_logs/base.html' %}
 
+{% block page_header %}
+  <div class="pb-3 mb-4 border-bottom">
+    <h1 class="display-5 fw-semibold text-primary">Your Topics</h1>
+    <p class="text-muted">Dive into your Learning Log. Click a topic to explore your entries.</p>
+  </div>
+{% endblock page_header %}
+
 {% block content %}
+  <div class="list-group shadow-sm rounded-3 mb-4">
+    {% for topic in topics %}
+      <a href="{% url 'learning_logs:topic' topic.id %}"
+         class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        {{ topic.text }}
+        <span class="badge bg-primary rounded-pill">{{ topic.entry_set.count }}</span>
+      </a>
+    {% empty %}
+      <div class="alert alert-info">
+        No topics have been added yet. Let the learning begin!
+      </div>
+    {% endfor %}
+  </div>
 
-    <p> Topics </p>
-    <ul>
-        {% for topic in topics %}
-        <li>
-            <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic.text }}</a>
-        </li>
-        {% empty %}
-        <li>No topics have been added yet.</li>
-        {% endfor %}
-    </ul>
-
-    <a href="{% url 'learning_logs:new_topic' %}">Add a new topic</a>
-
+  <a href="{% url 'learning_logs:new_topic' %}" class="btn btn-outline-primary">
+    ➕ Add a New Topic
+  </a>
 {% endblock content %}

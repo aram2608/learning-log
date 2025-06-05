@@ -1,98 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Learning Log{% endblock title %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        :root {
-            --bg: #e2e8f0;            /* light slate blue-gray */
-            --primary: #a6e3e9;       /* soft teal */
-            --text: black;          /* black */
-            --muted: #94a3b8;         /* cool gray */
-            --accent: #fcd34d;        /* mellow yellow */
-        }
-    
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-        }
-    
-        header {
-            background: var(--primary);
-            color: #1e1e2f;
-            padding: 1rem 2rem;
-        }
-    
-        header a {
-            color: #1e1e2f;
-            text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-    
-        nav {
-            background: #2d2f3a;
-            padding: 0.5rem 2rem;
-        }
-    
-        nav a {
-            margin-right: 1rem;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-    
-        nav a:hover {
-            color: var(--accent);
-        }
-    
-        main {
-            padding: 2rem;
-            max-width: 900px;
-            margin: auto;
-        }
-    
-        footer {
-            text-align: center;
-            font-size: 0.875rem;
-            color: var(--muted);
-            margin: 3rem auto 1rem;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning Log</title>
+
+  {% load django_bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+
+  <style>
+    :root {
+      --bg-light: #e6f0f9;
+      --bg-dark: #c7dff9;
+      --primary: #0b5cad;
+      --secondary: #045c64;
+      --accent: #e1effa;
+      --text-main: #1e293b;
+      --text-muted: #6c757d;
+    }
+
+    body {
+      background: linear-gradient(180deg, var(--bg-light) 0%, var(--bg-dark) 100%);
+      color: var(--text-main);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    nav.navbar {
+      background: var(--accent);
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .navbar-brand {
+      font-weight: 600;
+      color: var(--primary) !important;
+    }
+
+    .nav-link {
+      color: var(--secondary) !important;
+    }
+
+    .nav-link:hover {
+      text-decoration: underline;
+    }
+
+    .navbar-text {
+      color: var(--text-muted);
+    }
+
+    main.container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button.btn-outline-secondary {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    button.btn-outline-secondary:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <a href="{% url 'learning_logs:index' %}">Learning Log</a>
-    </header>
+  <nav class="navbar navbar-expand-md mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'learning_logs:index' %}">Learning Log</a>
 
-    <nav>
-        <a href="{% url 'learning_logs:topics' %}">Topics</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'learning_logs:topics' %}">Topics</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <span class="navbar-text me-2">Hello, {{ user.username }}.</span>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:login' %}">Log in</a>
+            </li>
+          {% endif %}
+        </ul>
+
         {% if user.is_authenticated %}
-          Hello, {{ user.username }}.
-        {% else %}
-        <a href="{% url 'accounts:register' %}">Register</a>
-          <a href="{% url 'accounts:login' %}">Log in</a>
-        {% endif %}
-        {% if user.is_authenticated %}
-          <hr />
-          <form action="{% url 'accounts:logout' %}" method="post">
+          <form action="{% url 'accounts:logout' %}" method='post' class="d-inline ms-3">
             {% csrf_token %}
-            <button name="submit">Log Out</button>
+            <button name='submit' class='btn btn-outline-secondary btn-sm'>Log out</button>
           </form>
         {% endif %}
-    </nav>
+      </div>
+    </div>
+  </nav>
 
-    <main>
-        {% block content %}
-        {% endblock content %}
-    </main>
+  <main class="container">
+    <div class="pb-2 mb-4 border-bottom">
+      {% block page_header %}{% endblock page_header %}
+    </div>
 
-    <footer>
-        &copy; 2025 Learning Log. Made with Django.
-    </footer>
+    <div>
+      {% block content %}{% endblock content %}
+    </div>
+  </main>
 </body>
 </html>

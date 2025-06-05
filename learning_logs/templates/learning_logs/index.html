@@ -1,5 +1,26 @@
 {% extends 'learning_logs/base.html' %}
 
-{% block content %}
-    <p>Learning Log helps you keep track of your learning, for any topic you are interested in.</p>
-{% endblock content %}
+{% block page_header %}
+  <div class="p-4 mb-5 rounded-4 shadow-sm" style="
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      border: 1px solid #93c5fd;
+      color: #0f172a;
+    ">
+    <div class="container-fluid py-4">
+      <h1 class="display-3 fw-semibold mb-3" style="color: #1e3a8a;">
+        Track your learning.
+      </h1>
+
+      <p class="lead" style="max-width: 700px;">
+        Create your personal Learning Log and track the topics you're diving into.
+        Each time you learn something new, jot it down and grow your knowledge library.
+      </p>
+
+      <a class="btn btn-primary btn-lg mt-3 shadow"
+         href="{% url 'accounts:register' %}"
+         style="background-color: #2563eb; border-color: #1d4ed8;">
+        Register &raquo;
+      </a>
+    </div>
+  </div>
+{% endblock page_header %}

@@ -1,13 +1,22 @@
 {% extends 'learning_logs/base.html' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
+  <div class="mb-4">
+    <a href="{% url 'learning_logs:topic' topic.id %}" class="text-decoration-none text-primary">
+      ← Back to {{ topic }}
+    </a>
+  </div>
 
-    <p><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></p>
+  <div class="mb-5">
+    <h2 class="mb-3 text-primary">Edit Entry</h2>
+    <p class="text-muted">Make changes to your entry on <strong>{{ topic.text }}</strong>.</p>
 
-    <p>Edit entry</p>
-    <form action="{% url 'learning_logs:edit_entry' entry.id %}" method='post'>
-        {% csrf_token %}
-        {{ form.as_div }}
-        <button name="submit">Save changes</button>
+    <form action="{% url 'learning_logs:edit_entry' entry.id %}" method="post"
+          class="p-4 bg-white shadow rounded-3 border">
+      {% csrf_token %}
+      {% bootstrap_form form layout="vertical" %}
+      {% bootstrap_button "Save Changes" button_type="submit" button_class="btn-success mt-3" %}
     </form>
+  </div>
 {% endblock content %}
